@@ -61,7 +61,7 @@ tf.keras.Sequential([
 ## 두번째 모델 epoch를 10 -> 20 으로 변경
 
 ### 결과
-<img width="578" alt="evaluation_1" src="./images/evaluation_02.png" />
+<img width="578" alt="evaluation_1" src="./images/evaluation_02-02.png" />
 
 ### 평가
 Dropout(0.2)을 넣었음에도 불구하고, 학습 횟수(Epoch)가 너무 많아지자 모델이 다시 학습 데이터의 사소한 특징(노이즈)까지 외우기 시작했습니다.
@@ -71,4 +71,28 @@ Dropout(0.2)을 넣었음에도 불구하고, 학습 횟수(Epoch)가 너무 많
 
 무조건 많이 학습시킨다고 좋은 것은 아니다는 결과를 도출하였습니다.
 해당 결과 이후 모델 학습 시 EarlyStopping을 추가하였습니다.
+
+## Dense의 노드 수를 2배로 늘린 두번째 모델
+```python
+tf.keras.Sequential([
+    # 이미지의 특징을 추출하는 부분 (Feature Extraction)
+    tf.keras.layers.Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1)),
+    tf.keras.layers.MaxPooling2D((2, 2)),
+    tf.keras.layers.Conv2D(64, (3, 3), activation='relu'),
+    tf.keras.layers.MaxPooling2D((2, 2)),
+
+    # 추출된 특징을 1차원으로 펼쳐 분류하는 부분 (Classification)
+    tf.keras.layers.Flatten(),
+    tf.keras.layers.Dense(256, activation='relu'),
+    tf.keras.layers.Dropout(0.2), # 20%의 뉴런을 무작위로 쉬게 함
+    tf.keras.layers.Dense(10, activation='softmax') # 10개 카테고리 분류
+])
+```
+<img width="578" alt="evaluation_1" src="./images/model_summary_03.png" />
+
+### 결과
+<img width="578" alt="evaluation_1" src="./images/evaluation_03.png" />
+
+### 평가
+실제 에포크 실시 횟수는 줄었으나, 정확도에는 큰 변화를 확인하기는 어려웠습니다.
 
