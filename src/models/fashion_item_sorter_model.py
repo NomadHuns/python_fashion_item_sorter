@@ -25,11 +25,16 @@ def fit_model(model, train_images, train_labels, epochs):
     return model.fit(train_images, train_labels, epochs=epochs, validation_split=0.2)
 
 def evaluate_model(model, test_images, test_labels, history):
-    test_loss, test_acc = model.evaluate(test_images, test_labels, verbose=2)
-    print(f'\n테스트 정확도: {test_acc:.4f}')
-    plt.plot(history.history['accuracy'], label='train_accuracy')
-    plt.plot(history.history['val_accuracy'], label = 'val_accuracy')
+    # 한글 폰트 설정 (Mac 전용)
+    plt.rc('font', family='AppleGothic')
+    plt.rcParams['axes.unicode_minus'] = False
+
+    model.evaluate(test_images, test_labels, verbose=2)
+
+    plt.plot(history.history['accuracy'], label='훈련 정확도')
+    plt.plot(history.history['val_accuracy'], label = '검증 정확도')
     plt.xlabel('Epoch')
     plt.ylabel('Accuracy')
     plt.legend(loc='lower right')
+    plt.title('모델 정확도 추이')
     plt.show()
