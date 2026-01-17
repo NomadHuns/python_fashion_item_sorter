@@ -15,6 +15,8 @@ tf.keras.Sequential([
     tf.keras.layers.Dense(10, activation='softmax')
 ])
 ```
+<img width="578" alt="evaluation_1" src="./images/model_summary_01.png" />
+
 ### 결과
 <img width="578" alt="evaluation_1" src="./images/evalutaion_01.png" />
 

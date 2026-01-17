@@ -15,6 +15,8 @@ def make_model():
         tf.keras.layers.Dense(10, activation='softmax') # 10개 카테고리 분류
     ])
 
+    model.summary()
+
     model.compile(optimizer='adam',
               loss='sparse_categorical_crossentropy',
               metrics=['accuracy'])
