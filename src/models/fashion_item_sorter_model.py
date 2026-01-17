@@ -2,24 +2,31 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 
 def make_model():
+    # 1. 데이터 증강 레이어 정의
+    data_augmentation = tf.keras.Sequential([
+        # 좌우 반전 (옷의 경우 좌우가 바뀌어도 같은 아이템입니다)
+        tf.keras.layers.RandomFlip("horizontal"),
+        # 이미지 회전 (최대 10% 내외로 살짝 비틀기)
+        tf.keras.layers.RandomRotation(0.1),
+        # 이미지 확대/축소 (최대 10% 내외)
+        tf.keras.layers.RandomZoom(0.1),
+    ])
+
     model = tf.keras.Sequential([
-        # 1. 첫 번째 특징 추출 블록
+        # 데이터 증강 레이어를 처음에 배치
+        data_augmentation,
+
+        # 이미지의 특징을 추출하는 부분 (Feature Extraction)
         tf.keras.layers.Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1)),
         tf.keras.layers.MaxPooling2D((2, 2)),
-
-        # 2. 두 번째 특징 추출 블록
         tf.keras.layers.Conv2D(64, (3, 3), activation='relu'),
         tf.keras.layers.MaxPooling2D((2, 2)),
 
-        # 3. 추가된 세 번째 특징 추출 블록 (New!)
-        tf.keras.layers.Conv2D(128, (3, 3), activation='relu'),
-        # 이미지 크기가 이미 작아졌으므로 여기서는 MaxPooling을 생략하거나 신중히 결정합니다.
-
-        # 4. 분류 부분
+        # 추출된 특징을 1차원으로 펼쳐 분류하는 부분 (Classification)
         tf.keras.layers.Flatten(),
         tf.keras.layers.Dense(256, activation='relu'),
-        tf.keras.layers.Dropout(0.2),
-        tf.keras.layers.Dense(10, activation='softmax')
+        tf.keras.layers.Dropout(0.2), # 20%의 뉴런을 무작위로 쉬게 함
+        tf.keras.layers.Dense(10, activation='softmax') # 10개 카테고리 분류
     ])
 
     model.summary()

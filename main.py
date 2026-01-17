@@ -9,6 +9,9 @@ from src.normalizator.normalizator import image_normalize
 train_images = image_normalize(train_images)
 test_images = image_normalize(test_images)
 
+train_images = train_images.reshape((-1, 28, 28, 1))
+test_images = test_images.reshape((-1, 28, 28, 1))
+
 # 데이터 확인용 레이블 리스트
 class_names = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat',
                'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot']

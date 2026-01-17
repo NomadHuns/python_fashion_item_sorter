@@ -129,3 +129,45 @@ tf.keras.Sequential([
 12회 학습 동안 약 95.5%까지 매끄럽게 상승했습니다. 레이어가 깊어지고 뉴런 수가 늘어난 만큼, 훈련 데이터를 학습하는 능력은 매우 강력해졌습니다.
 
 하지만 검증 정확도는 에포크 8 부근에서 약 91%로 정점을 찍은 뒤, 오히려 90.5% 수준으로 소폭 하락하며 정체되었습니다.
+
+## 데이터 증강이 추가된 다섯번째 모델
+```python
+# 1. 데이터 증강 레이어 정의
+    data_augmentation = tf.keras.Sequential([
+        # 좌우 반전 (옷의 경우 좌우가 바뀌어도 같은 아이템입니다)
+        tf.keras.layers.RandomFlip("horizontal"),
+        # 이미지 회전 (최대 10% 내외로 살짝 비틀기)
+        tf.keras.layers.RandomRotation(0.1),
+        # 이미지 확대/축소 (최대 10% 내외)
+        tf.keras.layers.RandomZoom(0.1),
+    ])
+
+    model = tf.keras.Sequential([
+        # 데이터 증강 레이어를 처음에 배치
+        data_augmentation,
+
+        # 이미지의 특징을 추출하는 부분 (Feature Extraction)
+        tf.keras.layers.Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1)),
+        tf.keras.layers.MaxPooling2D((2, 2)),
+        tf.keras.layers.Conv2D(64, (3, 3), activation='relu'),
+        tf.keras.layers.MaxPooling2D((2, 2)),
+
+        # 추출된 특징을 1차원으로 펼쳐 분류하는 부분 (Classification)
+        tf.keras.layers.Flatten(),
+        tf.keras.layers.Dense(256, activation='relu'),
+        tf.keras.layers.Dropout(0.2), # 20%의 뉴런을 무작위로 쉬게 함
+        tf.keras.layers.Dense(10, activation='softmax') # 10개 카테고리 분류
+    ])
+```
+
+### 결과
+<img width="578" alt="evaluation_1" src="./images/evaluation_05.png" />
+
+### 평가
+파란색(훈련)과 주황색(검증) 곡선이 거의 일치하며 함께 상승하고 있습니다.
+
+이전 그래프들(03, 04)에서 보였던 거대한 간격이 사라졌습니다. 
+
+이제 모델은 데이터를 '암기'하는 것이 아니라, 이미지가 뒤집히거나 돌아가도 본질(이게 셔츠라는 사실)을 파악하는 일반화 능력을 갖추게 되었습니다.
+
+다만, 최종 정확도가 약 88~89% 정도로, 이전의 95%보다 낮아졌습니다.
