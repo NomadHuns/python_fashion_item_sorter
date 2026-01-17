@@ -12,6 +12,7 @@ def make_model():
         # 추출된 특징을 1차원으로 펼쳐 분류하는 부분 (Classification)
         tf.keras.layers.Flatten(),
         tf.keras.layers.Dense(128, activation='relu'),
+        tf.keras.layers.Dropout(0.2), # 20%의 뉴런을 무작위로 쉬게 함
         tf.keras.layers.Dense(10, activation='softmax') # 10개 카테고리 분류
     ])
 
