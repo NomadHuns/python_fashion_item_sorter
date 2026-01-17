@@ -25,7 +25,9 @@ def make_model():
     return model
 
 def fit_model(model, train_images, train_labels, epochs):
-    return model.fit(train_images, train_labels, epochs=epochs, validation_split=0.2)
+    early_stop = tf.keras.callbacks.EarlyStopping(monitor='val_accuracy', patience=3)
+
+    return model.fit(train_images, train_labels, epochs=epochs, validation_split=0.2, callbacks=[early_stop])
 
 def evaluate_model(model, test_images, test_labels, history):
     # 한글 폰트 설정 (Mac 전용)
