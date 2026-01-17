@@ -19,7 +19,7 @@ class_names = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat',
 model = make_model()
 
 # 3. 모델 학습 (epochs는 반복 횟수입니다)
-history = fit_model(model, train_images, train_labels, 20)
+history = fit_model(model, train_images, train_labels, 50)
 
 # 4. 테스트 데이터로 성능 평가
 evaluate_model(model, test_images, test_labels, history)

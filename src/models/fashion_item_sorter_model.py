@@ -38,7 +38,14 @@ def make_model():
     return model
 
 def fit_model(model, train_images, train_labels, epochs):
-    early_stop = tf.keras.callbacks.EarlyStopping(monitor='val_accuracy', patience=3)
+    early_stop = tf.keras.callbacks.EarlyStopping(
+        monitor='val_accuracy',
+        patience=5,
+        start_from_epoch=10, # 초기 10회는 무슨 일이 있어도 멈추지 않고 학습함
+        min_delta=0.0001, # 아주 미세한 향상만 있어도 '참기' 횟수를 초기화함
+        restore_best_weights=True, # 멈춘 뒤 가장 성적이 좋았던 때로 복구
+        verbose=1 # 언제 멈췄는지 알려준다
+    )
 
     return model.fit(train_images, train_labels, epochs=epochs, validation_split=0.2, callbacks=[early_stop])
 

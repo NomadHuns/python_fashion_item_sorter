@@ -171,3 +171,20 @@ tf.keras.Sequential([
 이제 모델은 데이터를 '암기'하는 것이 아니라, 이미지가 뒤집히거나 돌아가도 본질(이게 셔츠라는 사실)을 파악하는 일반화 능력을 갖추게 되었습니다.
 
 다만, 최종 정확도가 약 88~89% 정도로, 이전의 95%보다 낮아졌습니다.
+
+## 다섯번째 모델에서 에포크 50으로 상향
+```python
+early_stop = tf.keras.callbacks.EarlyStopping(
+        monitor='val_accuracy',
+        patience=5,
+        start_from_epoch=10, # 초기 10회는 무슨 일이 있어도 멈추지 않고 학습함
+        min_delta=0.0001, # 아주 미세한 향상만 있어도 '참기' 횟수를 초기화함
+        restore_best_weights=True, # 멈춘 뒤 가장 성적이 좋았던 때로 복구
+        verbose=1 # 언제 멈췄는지 알려준다
+    )
+```
+
+### 결과
+<img width="578" alt="evaluation_1" src="./images/evaluation_06.png" />
+
+### 평가
