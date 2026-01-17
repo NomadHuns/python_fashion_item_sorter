@@ -96,3 +96,36 @@ tf.keras.Sequential([
 ### 평가
 실제 에포크 실시 횟수는 줄었으나, 정확도에는 큰 변화를 확인하기는 어려웠습니다.
 
+## Conv2D 층이 추가된 네번째 모델
+```python
+tf.keras.Sequential([
+    # 1. 첫 번째 특징 추출 블록
+    tf.keras.layers.Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1)),
+    tf.keras.layers.MaxPooling2D((2, 2)),
+
+    # 2. 두 번째 특징 추출 블록
+    tf.keras.layers.Conv2D(64, (3, 3), activation='relu'),
+    tf.keras.layers.MaxPooling2D((2, 2)),
+
+    # 3. 추가된 세 번째 특징 추출 블록 (New!)
+    tf.keras.layers.Conv2D(128, (3, 3), activation='relu'),
+    # 이미지 크기가 이미 작아졌으므로 여기서는 MaxPooling을 생략하거나 신중히 결정합니다.
+
+    # 4. 분류 부분
+    tf.keras.layers.Flatten(),
+    tf.keras.layers.Dense(256, activation='relu'),
+    tf.keras.layers.Dropout(0.2),
+    tf.keras.layers.Dense(10, activation='softmax')
+])
+```
+<img width="578" alt="evaluation_1" src="./images/model_summary_04.png" />
+
+### 결과
+<img width="578" alt="evaluation_1" src="./images/evaluation_04.png" />
+
+### 평가
+이번 모델은 이전보다 더 깊고 복잡해졌는데, 그래프를 통해 본 결과는 "모델의 체급(용량)은 커졌지만, Fashion MNIST 데이터에는 다소 과한 설정(Overkill)이라고 할 수 있습니다.
+
+12회 학습 동안 약 95.5%까지 매끄럽게 상승했습니다. 레이어가 깊어지고 뉴런 수가 늘어난 만큼, 훈련 데이터를 학습하는 능력은 매우 강력해졌습니다.
+
+하지만 검증 정확도는 에포크 8 부근에서 약 91%로 정점을 찍은 뒤, 오히려 90.5% 수준으로 소폭 하락하며 정체되었습니다.

@@ -3,17 +3,23 @@ import matplotlib.pyplot as plt
 
 def make_model():
     model = tf.keras.Sequential([
-        # 이미지의 특징을 추출하는 부분 (Feature Extraction)
+        # 1. 첫 번째 특징 추출 블록
         tf.keras.layers.Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1)),
         tf.keras.layers.MaxPooling2D((2, 2)),
+
+        # 2. 두 번째 특징 추출 블록
         tf.keras.layers.Conv2D(64, (3, 3), activation='relu'),
         tf.keras.layers.MaxPooling2D((2, 2)),
 
-        # 추출된 특징을 1차원으로 펼쳐 분류하는 부분 (Classification)
+        # 3. 추가된 세 번째 특징 추출 블록 (New!)
+        tf.keras.layers.Conv2D(128, (3, 3), activation='relu'),
+        # 이미지 크기가 이미 작아졌으므로 여기서는 MaxPooling을 생략하거나 신중히 결정합니다.
+
+        # 4. 분류 부분
         tf.keras.layers.Flatten(),
         tf.keras.layers.Dense(256, activation='relu'),
-        tf.keras.layers.Dropout(0.2), # 20%의 뉴런을 무작위로 쉬게 함
-        tf.keras.layers.Dense(10, activation='softmax') # 10개 카테고리 분류
+        tf.keras.layers.Dropout(0.2),
+        tf.keras.layers.Dense(10, activation='softmax')
     ])
 
     model.summary()
