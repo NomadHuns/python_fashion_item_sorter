@@ -188,3 +188,4 @@ early_stop = tf.keras.callbacks.EarlyStopping(
 <img width="578" alt="evaluation_1" src="./images/evaluation_06.png" />
 
 ### 평가
+에포크를 늘렸지만 검증 정확도는 유의미할 정도로 늘어나지는 않았습니다.

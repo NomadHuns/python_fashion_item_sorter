@@ -47,7 +47,19 @@ def fit_model(model, train_images, train_labels, epochs):
         verbose=1 # 언제 멈췄는지 알려준다
     )
 
-    return model.fit(train_images, train_labels, epochs=epochs, validation_split=0.2, callbacks=[early_stop])
+    checkpoint_path = "my_fashion_model.keras"
+    checkpoint = tf.keras.callbacks.ModelCheckpoint(
+        filepath=checkpoint_path,
+        monitor='val_accuracy',
+        save_best_only=True, # 가장 성적이 좋은 모델만 덮어쓰기
+        verbose=1
+    )
+
+    return model.fit(train_images, train_labels, epochs=epochs, validation_split=0.2, callbacks=[early_stop, checkpoint])
+
+def load_model(model_name):
+    return tf.keras.models.load_model(model_name)
+
 
 def evaluate_model(model, test_images, test_labels, history):
     # 한글 폰트 설정 (Mac 전용)
