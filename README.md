@@ -189,3 +189,18 @@ early_stop = tf.keras.callbacks.EarlyStopping(
 
 ### 평가
 에포크를 늘렸지만 검증 정확도는 유의미할 정도로 늘어나지는 않았습니다.
+
+## 실제 분별기 결과
+<img width="578" alt="evaluation_1" src="./images/test_tshirt_01.jpg" />
+<img width="578" alt="evaluation_1" src="./images/test_result_01.png" />
+<img width="578" alt="evaluation_1" src="./images/test_tshirt_02.jpg" />
+<img width="578" alt="evaluation_1" src="./images/test_result_02.png" />
+<img width="578" alt="evaluation_1" src="./images/test_bag_01.webp" />
+<img width="578" alt="evaluation_1" src="./images/test_result_03.png" />
+<img width="578" alt="evaluation_1" src="./images/test_bag_02.jpeg" />
+<img width="578" alt="evaluation_1" src="./images/test_result_04.png" />
+
+### 평가
+티셔츠 종류는 예측 확률이 높았으나, 백팩의 경우 틀린 예측을 하는 경우가 많았습니다.
+
+더 다양한 데이터와 모델 정의를 다르게 할 경우 예측율이 올라갈 것으로 예상됩니다.
